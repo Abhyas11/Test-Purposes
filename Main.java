@@ -7,6 +7,8 @@ public class Main {
         int rows = scanner.nextInt();
         System.out.println("Enter the number of seats in each row:");
         int seats = scanner.nextInt();
+        int rowNum = 0;
+        int seatNum = 0;
         String[][] seeCine = cinema(rows, seats);
 
         boolean run = true;
@@ -14,15 +16,16 @@ public class Main {
             System.out.println();
             System.out.println("1. Show the seats");
             System.out.println("2. Buy a ticket");
+            System.out.println("3. Statistics");
             System.out.println("0. Exit");
             System.out.println();
             int val = scanner.nextInt();
-            switch(val){
+            switch(val) {
                 case 1:
                     System.out.println("Cinema:");
                     //String[][] seeCine = cinema(rows, seats);
-                    for(int i =0; i<seeCine.length; i++){
-                        for(int j=0; j<seeCine[0].length;j++){
+                    for (int i = 0; i < seeCine.length; i++) {
+                        for (int j = 0; j < seeCine[0].length; j++) {
                             System.out.print(seeCine[i][j] + " ");
                         }
                         System.out.println();
@@ -30,12 +33,30 @@ public class Main {
 
                     break;
                 case 2:
-                    System.out.println("Enter a row number:");
-                    int rowNum = scanner.nextInt();
-                    System.out.println("Enter a seat number in that row:");
-                    int seatNum = scanner.nextInt();
+                    boolean start = true;
+                    while (start) {
+                        System.out.println("Enter a row number:");
+                        rowNum = scanner.nextInt();
+                        System.out.println("Enter a seat number in that row:");
+                        seatNum = scanner.nextInt();
+                        if(rowNum<1 || rowNum>rows || seatNum<1 || seatNum>seats){
+                            System.out.println("Wrong input!");
+                        } else if (seeCine[rowNum][seatNum] == "B") {
+                            System.out.println("That ticket has already been purchased!");
+                        }else {
+                            start = false;
+                        }
+                    }
                     ticketPrice(rows, seats, rowNum);
                     seeCine[rowNum][seatNum] = "B";
+                    break;
+                case 3:
+                    int totalPurchasedTickets = purchasedTicketsNum(seeCine);
+                    System.out.println("Number of purchased tickets: "+totalPurchasedTickets);
+                    double purchasedTicketsPercentage = ((double) totalPurchasedTickets /(rows*seats))*100;
+                    System.out.println(purchasedTicketsPercentage);
+                    double roundedPercentage = Math.round(purchasedTicketsPercentage * 100.0) / 100.0;
+                    System.out.println("Percentage: " +roundedPercentage+"%");
                     break;
                 case 0:
                     run = false;
@@ -74,5 +95,17 @@ public class Main {
             }
         }
         return cinemaView;
+    }
+
+    public static int purchasedTicketsNum(String[][] seeCine){
+        int tNum = 0;
+        for(int i =0; i< seeCine.length; i++){
+            for(int j=0; j<seeCine[0].length; j++){
+                if(seeCine[i][j]=="B"){
+                    tNum++;
+                }
+            }
+        }
+        return tNum;
     }
 }
