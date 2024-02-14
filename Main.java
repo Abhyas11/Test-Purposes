@@ -57,6 +57,7 @@ public class Main {
                     System.out.println(purchasedTicketsPercentage);
                     double roundedPercentage = Math.round(purchasedTicketsPercentage * 100.0) / 100.0;
                     System.out.println("Percentage: " +roundedPercentage+"%");
+                    totalIncome(rows, seats);
                     break;
                 case 0:
                     run = false;
@@ -107,5 +108,19 @@ public class Main {
             }
         }
         return tNum;
+    }
+
+    public static void totalIncome(int rows, int seats){
+        int totalIncome = 0;
+        if(rows*seats < 60){
+            totalIncome = rows * seats * 10;
+        }else {
+            int firstHalf = rows/2;
+            int firstHalfPrice = firstHalf * seats * 10;
+            int secondHalf = rows - firstHalf;
+            int secondHalfPrice = secondHalf * seats * 8;
+            totalIncome = firstHalfPrice + secondHalfPrice;
+        }
+        System.out.println("Total income: $" + totalIncome);
     }
 }
